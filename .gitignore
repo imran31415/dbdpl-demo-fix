@@ -1,0 +1,18 @@
+# Environment variables
+.env
+
+# Generated models
+models-before/
+models-after/
+models/
+
+# Binaries
+dbtpl-fixed
+
+# IDE
+.vscode/
+.idea/
+
+# OS
+.DS_Store
+Thumbs.db
