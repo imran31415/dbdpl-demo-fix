@@ -54,10 +54,10 @@ func XoTestById(ctx context.Context, db DB, id int) (*XoTest, error) {  // <-- D
 Our backwards-compatible fix generates:
 
 ```go
-// ✅ UNIQUE FUNCTION NAMES - NO CONFLICTS!
-// XoTestByIdPk retrieves a row from 'public.xo_test' as a XoTest.
+// ✅ BACKWARDS COMPATIBLE - PRIMARY KEY KEEPS ORIGINAL NAME!
+// XoTestById retrieves a row from 'public.xo_test' as a XoTest.
 // Generated from index 'xo_test_pkey'.
-func XoTestByIdPk(ctx context.Context, db DB, id int) (*XoTest, error) {
+func XoTestById(ctx context.Context, db DB, id int) (*XoTest, error) {
     // query
     const sqlstr = `SELECT ` +
         `id, name ` +
@@ -74,11 +74,11 @@ func XoTestByIdPk(ctx context.Context, db DB, id int) (*XoTest, error) {
     return &xo, nil
 }
 
-// ✅ UNIQUE FUNCTION NAME WITH SUFFIX
+// ✅ CONFLICTING INDEX GETS SUFFIX
 // XoTestByIdUnique retrieves a row from 'public.xo_test' as a XoTest.
 // Generated from index 'xo_test_id_unique'.
 func XoTestByIdUnique(ctx context.Context, db DB, id int) (*XoTest, error) {
-    // Same implementation with unique name
+    // Same implementation with unique name to resolve conflict
 }
 ```
 
@@ -102,8 +102,8 @@ func PostById(ctx context.Context, db DB, id int) (*Post, error) { ... }
 |----------|------------|-----------|---------|
 | Single PK | ✅ `PostById` | ✅ `PostById` | Backwards Compatible |
 | Single Unique | ✅ `UserByEmail` | ✅ `UserByEmail` | Backwards Compatible |
-| PK + Unique (same col) | ❌ Duplicate `XoTestById` | ✅ `XoTestByIdPk`, `XoTestByIdUnique` | Fixed |
-| Multiple Unique (same col) | ❌ Duplicates | ✅ Unique with suffixes | Fixed |
+| PK + Unique (same col) | ❌ Duplicate `XoTestById` | ✅ `XoTestById`, `XoTestByIdUnique` | Fixed & Backwards Compatible |
+| Multiple Unique (same col) | ❌ Duplicates | ✅ First keeps name, rest get suffixes | Fixed & Backwards Compatible |
 
 ## How to Test This Demo
 

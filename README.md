@@ -48,7 +48,7 @@ go build ./models-after/...   # Will compile successfully
 ## Key Results
 
 - **Before**: Generates duplicate `XoTestById` functions → compilation error
-- **After**: Generates unique `XoTestByIdPk` and `XoTestByIdUnique` functions → compiles successfully
-- **Backwards Compatible**: Single indexes keep original names (no breaking changes)
+- **After**: Generates `XoTestById` (unchanged) and `XoTestByIdUnique` functions → compiles successfully
+- **Truly Backwards Compatible**: Primary keys keep exact original names (no breaking changes)
 
 See `DEMO_RESULTS.md` for detailed comparison.
